@@ -1,19 +1,23 @@
 """Configuration loading utilities."""
 
 import json
+import os
 from pathlib import Path
 
 from nanobot.config.schema import Config
 
 
 def get_config_path() -> Path:
-    """Get the default configuration file path."""
+    """Get the default configuration file path. Override with NANOBOT_CONFIG env var."""
+    if env_config := os.environ.get("NANOBOT_CONFIG"):
+        return Path(env_config).expanduser()
     return Path.home() / ".nanobot" / "config.json"
 
 
 def get_data_dir() -> Path:
     """Get the nanobot data directory."""
     from nanobot.utils.helpers import get_data_path
+
     return get_data_path()
 
 
